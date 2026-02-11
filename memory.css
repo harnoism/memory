@@ -41,10 +41,11 @@ body{
     transform: rotateY(180deg);
 }
 
-.card.match .font{
+.card.match .front{
     border-color: green;
     box-shadow: 0 0 10px green;
     cursor: default;
+    /* affiche le curseur normal du système (souvent une flèche). */
     background-color: lightgreen;
 }
 
@@ -53,12 +54,32 @@ body{
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    backface-visibility: hidden; 
+    /* contrôle si la face arrière d’un élément est visible ou non quand il est retourné. */
     border-radius: 10px;
 }
 
-.card .font{
+.card .front{
     background-size: cover;
     background-position: center;
+}
+
+.back {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     transform: rotateY(180deg);
+}
+/* .game-container h1 {
+    color: #333;
+    margin-bottom: 20px;
+} */
+
+.level-info {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
 }
