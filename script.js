@@ -64,6 +64,7 @@ let count = 0; //Compteur de cartes retournées.
 let currentlvl = 0; //lvl actuel
 let matchedPairs = 0 //paires trouvées
 let previousTarget = null; //Pr eviter de cliquer deux fois sur la mm carte
+let isChecking=false;
 
 const game = document.querySelector('.game-board');
 let gameGrid = [];
@@ -123,17 +124,21 @@ function initGameBoard() { //Parcourons les cartes mélangées et ajoutons chq a
 function handleCardClick(event) {  //Add un écouteur d'event pr les clics sur les cartes
     const clicked = event.target;
 
+    if(isChecking)return;
     if (!clicked.classList.contains('front') && !clicked.classList.contains('back')) return; //Si l’élément cliqué n’est ni la face avant ni la face arrière d’une carte
-    if (previousTarget === clicked) return; //Si tu cliques deux fois sur la même carte = on ignore
+    // if (previousTarget === clicked) return; //Si tu cliques deux fois sur la même carte = on ignore
     if (clicked.parentNode.classList.contains('match')) return; //Si la carte est déjà validée =  on ignore
+    if (clicked.parentNode.classList.contains('selected')) return;
+    if (count >= 2)return; //Empêche plus de deux cartes retournées.
 
-    if (count < 2) { //Empêche plus de deux cartes retournées.
         count++;
         clicked.parentNode.classList.add('selected', 'flipped'); //selected:carte choisie, flipped: animation
         if (count === 1) {
             firstGuess = clicked.parentNode.dataset.name; //Stocke le nom et compare ensuite
+            previousTarget=clicked;
         } else {
             secondGuess = clicked.parentNode.dataset.name;
+            isChecking=true;
 
             if (firstGuess && secondGuess) {
                 if (firstGuess === secondGuess) {
@@ -142,8 +147,8 @@ function handleCardClick(event) {  //Add un écouteur d'event pr les clics sur l
                 setTimeout(resetGuesses, delay); //reinitinialise
             }
         }
-        previousTarget = clicked
-    }
+        // previousTarget = clicked
+    
 }
 
 //===réinitialisons les tentatives===
@@ -186,6 +191,7 @@ function resetGuesses() {
     secondGuess = '';
     count = 0;
     previousTarget = null;
+    isChecking=false;
 
     const selected = document.querySelectorAll('.selected');
     selected.forEach(card => card.classList.remove('selected', 'flipped')); //retourne les 2 cartes selected
