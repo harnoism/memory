@@ -71,7 +71,7 @@ function initGameBoard() { //Parcourons les cartes mélangées et ajoutons chq a
     const levels = cardsArray[currentlvl];
     document.getElementById('level-display').textContent = currentlvl + 1;
     document.getElementById('pairs-display').textContent = 0;
-    document.getElementById('total-pairs').textContent = levels[currentlvl].length;
+    document.getElementById('total-pairs').textContent = levels.length;
 
 
 
@@ -79,7 +79,13 @@ function initGameBoard() { //Parcourons les cartes mélangées et ajoutons chq a
 
     game.innerHTML = ""; // vider la grille avant reconstruction
 
-
+    //  Adaptation automatique de la grille
+    const totalCards = gameGrid.length;
+    if (totalCards <= 16) {
+        game.style.gridTemplateColumns = 'repeat(4, 100px)'; // 4x4 pour niveau 1
+    } else {
+        game.style.gridTemplateColumns = 'repeat(8, 100px)'; // 8x4 pour niveau 2
+    }
     gameGrid.forEach(item => { //Pour chaque carte mélangée
         const card = createCard(item);
         game.appendChild(card); //Ajoute la carte au plateau.
