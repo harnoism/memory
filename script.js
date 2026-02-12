@@ -26,8 +26,34 @@ const cardsArray = [
         { name: 'pineapple', img: 'icons/pineapple.png' },
         { name: 'orange', img: 'icons/orange.png' },
         { name: 'dragonfruit', img: 'icons/dragonfruit.png' },
-        { name: 'peach', img: 'icons/lime.png' },
+        { name: 'peach', img: 'icons/peach.png' },
         { name: 'raspberry', img: 'icons/raspberry.png' }
+    ],
+    [ // Niveau 3 - 24 paires
+        { name: 'apple', img: 'icons/_apple.png' },
+        { name: 'banana', img: 'icons/banana.png' },
+        { name: 'blackberry', img: 'icons/blackberry.png' },
+        { name: 'watermelon', img: 'icons/watermelon.png' },
+        { name: 'pear', img: 'icons/pear.png' },
+        { name: 'strawberry', img: 'icons/strawberry.png' },
+        { name: 'lime', img: 'icons/lime.png' },
+        { name: 'blueberry', img: 'icons/blueberry.png' },
+        { name: 'lemon', img: 'icons/lemon.png' },
+        { name: 'grapes', img: 'icons/grapes.png' },
+        { name: 'kiwi', img: 'icons/kiwi.png' },
+        { name: 'pineapple', img: 'icons/pineapple.png' },
+        { name: 'orange', img: 'icons/orange.png' },
+        { name: 'dragonfruit', img: 'icons/dragonfruit.png' },
+        { name: 'peach', img: 'icons/peach.png' },
+        { name: 'raspberry', img: 'icons/raspberry.png' },
+        { name: 'cherry', img: 'icons/cherry.png' },
+        { name: 'avocado', img: 'icons/avocado.png' },
+        { name: 'coconut', img: 'icons/coconut.png' },
+        { name: 'melon', img: 'icons/melon.png' },
+        { name: 'apricot', img: 'icons/apricot.png' },
+        { name: 'pomegranate', img: 'icons/pomegranate.png' },
+        { name: 'mango', img: 'icons/mango.png' },
+        { name: 'papaya', img: 'icons/papaya.png' }
     ],
 ];
 // config des variables globales
@@ -83,8 +109,10 @@ function initGameBoard() { //Parcourons les cartes mélangées et ajoutons chq a
     const totalCards = gameGrid.length;
     if (totalCards <= 16) {
         game.style.gridTemplateColumns = 'repeat(4, 100px)'; // 4x4 pour niveau 1
-    } else {
+    } else if(totalCards <= 32)  {
         game.style.gridTemplateColumns = 'repeat(8, 100px)'; // 8x4 pour niveau 2
+    } else {
+        game.style.gridTemplateColumns = 'repeat(12, 100px)'; // 12x4 pour niveau 3
     }
     gameGrid.forEach(item => { //Pour chaque carte mélangée
         const card = createCard(item);
@@ -95,9 +123,9 @@ function initGameBoard() { //Parcourons les cartes mélangées et ajoutons chq a
 function handleCardClick(event) {  //Add un écouteur d'event pr les clics sur les cartes
     const clicked = event.target;
 
-    if (!clicked.classList.contains('front') && !clicked.classList.contains('back')) return;
-    if (previousTarget === clicked) return;
-    if (clicked.parentNode.classList.contains('match')) return;
+    if (!clicked.classList.contains('front') && !clicked.classList.contains('back')) return; //Si l’élément cliqué n’est ni la face avant ni la face arrière d’une carte
+    if (previousTarget === clicked) return; //Si tu cliques deux fois sur la même carte = on ignore
+    if (clicked.parentNode.classList.contains('match')) return; //Si la carte est déjà validée =  on ignore
 
     if (count < 2) { //Empêche plus de deux cartes retournées.
         count++;
@@ -120,10 +148,10 @@ function handleCardClick(event) {  //Add un écouteur d'event pr les clics sur l
 
 //===réinitialisons les tentatives===
 function match() {
-    const selected = document.querySelectorAll('.selected');
-    selected.forEach(card => card.classList.add('match'));
+    const selected = document.querySelectorAll('.selected'); //On récupère les 2 cartes actuellement retournées. ("selected" contient ces 2 cartes)
+    selected.forEach(card => card.classList.add('match')); //ajoute la classe CSS = match
     matchedPairs++;
-    document.getElementById('pairs-display').textContent = matchedPairs;
+    document.getElementById('pairs-display').textContent = matchedPairs; //ça met à jour le texte affiché à l’écran.
     checkWin();
 }
 
@@ -160,7 +188,7 @@ function resetGuesses() {
     previousTarget = null;
 
     const selected = document.querySelectorAll('.selected');
-    selected.forEach(card => card.classList.remove('selected', 'flipped'));
+    selected.forEach(card => card.classList.remove('selected', 'flipped')); //retourne les 2 cartes selected
 }
 
 game.addEventListener('click', handleCardClick);
